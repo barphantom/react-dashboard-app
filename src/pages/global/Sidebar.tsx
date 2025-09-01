@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Sidebar, Menu, MenuItem } from "react-pro-sidebar"
+import {useNavigate} from "react-router-dom";
 // import 'react-pro-sidebar/dist/styles/StyledUl'
-import { Box, IconButton, Link, Typography, useTheme } from "@mui/material"
+import { Box, IconButton, Typography, useTheme } from "@mui/material"
 import { tokens } from "../../themes.tsx";
-import link from "react-router-dom"
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
@@ -24,25 +24,34 @@ type ItemProps = {
     icon: React.ReactNode;
     selected: string;
     setSelected: (value: string) => void;
+    navigate: (value: string) => void;
 }
 
-const Item = ({ title, to, icon, selected, setSelected }: ItemProps) => {
+
+const Item = ({ title, to, icon, selected, setSelected, navigate }: ItemProps) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     return (
-        <MenuItem
-            active={selected === title}
-            style={{ color: colors.grey[100] }}
-            onClick={() => setSelected(title)}
-            icon={icon}
-        >
-            <Typography>{title}</Typography>
-            <Link to={to}/>
-        </MenuItem>
-    )
-}
+        // <Link to={to} style={{ textDecoration: 'none' }}>
+            <MenuItem
+                // href={to}
+                active={selected === title}
+                style={{ color: colors.grey[100] }}
+                onClick={() => {
+                    setSelected(title);
+                    navigate(to);
+                }}
+                icon={icon}
+            >
+                <Typography>{title}</Typography>
+            </MenuItem>
+        // </Link>
+    );
+};
 
 const MySidebar = () => {
+    const navigate = useNavigate();
+
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -125,16 +134,96 @@ const MySidebar = () => {
                         </Box>
                     )}
 
+                    {/* Menu items */}
                     <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                         <Item
                             title="Dashboard"
-                            to="/"
+                            to="/eq"
                             icon={<HomeOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
+                            navigate={navigate}
                          />
-
-
+                        <Item
+                            title="Manage Team"
+                            to="/team"
+                            icon={<PeopleOutlineOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Contacts Information"
+                            to="/contacts"
+                            icon={<ContactsOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Invoices Balances"
+                            to="/invoices"
+                            icon={<ReceiptOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Profile Form"
+                            to="/form"
+                            icon={<PersonOutlineOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Calendar"
+                            to="/calendar"
+                            icon={<CalendarTodayOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="DAQ Page"
+                            to="/faq"
+                            icon={<HelpOutlineOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Bar Chart"
+                            to="/bar"
+                            icon={<BarChartOutlinedIcon/>}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Pie Chart"
+                            to="/pie"
+                            icon={<PieChartOutlineOutlinedIcon/>}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Line Chart"
+                            to="/line"
+                            icon={<TimelineOutlinedIcon/>}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
+                        <Item
+                            title="Geography Chart"
+                            to="/geography"
+                            icon={<MapOutlinedIcon/>}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                         />
                     </Box>
                 </Menu>
             </Sidebar>
