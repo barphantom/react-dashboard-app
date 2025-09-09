@@ -27,58 +27,82 @@ type ItemProps = {
     navigate: (value: string) => void;
 }
 
-
 const Item = ({ title, to, icon, selected, setSelected, navigate }: ItemProps) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     return (
-        // <Link to={to} style={{ textDecoration: 'none' }}>
-            <MenuItem
-                // href={to}
-                active={selected === title}
-                style={{ color: colors.grey[100] }}
-                onClick={() => {
-                    setSelected(title);
-                    navigate(to);
-                }}
-                icon={icon}
-            >
-                <Typography>{title}</Typography>
-            </MenuItem>
-        // </Link>
+        <MenuItem
+            active={selected === title}
+            style={{ color: colors.grey[100] }}
+            onClick={() => {
+                setSelected(title);
+                navigate(to);
+            }}
+            icon={icon}
+        >
+            <Typography>{title}</Typography>
+        </MenuItem>
     );
 };
 
 const MySidebar = () => {
     const navigate = useNavigate();
-
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
     const [selected, setSelected] = useState('Dashboard');
 
     return (
-        <Box
-            sx={{
-                "& .pro-sidebar-inner": {
-                    background: `${colors.primary[400]} !important`
-                },
-                "& .pro-icon-wrapper": {
-                    backgroundColor: "transparent !important"
-                },
-                "& .pro-inner-item": {
-                    padding: "5px 35px 5px 20px !important"
-                },
-                "& .pro-inner-item:hover": {
-                    color: "#868dfb !important"
-                },
-                "& .pro-menu-item.active": {
-                    color: "#6870fa !important"
-                },
-            }}
-        >
-            <Sidebar collapsed={isCollapsed}>
-                <Menu>
+        // <Box
+        //     sx={{
+        //         "& .pro-sidebar-inner": {
+        //             background: `${colors.primary[400]} !important`
+        //         },
+        //         "& .pro-icon-wrapper": {
+        //             backgroundColor: "transparent !important"
+        //         },
+        //         "& .pro-inner-item": {
+        //             padding: "5px 35px 5px 20px !important"
+        //         },
+        //         "& .pro-inner-item:hover": {
+        //             color: "#868dfb !important"
+        //         },
+        //         "& .pro-menu-item.active": {
+        //             color: "#6870fa !important"
+        //         },
+        //     }}
+        // >
+            <Sidebar
+                collapsed={isCollapsed}
+                rootStyles={{
+                    width: "280px",
+                    backgroundColor: colors.primary[800],
+                }}
+            >
+                <Menu
+                    menuItemStyles={{
+                        button: {
+                            padding: "5px 35px 5px 20px",
+                            color: colors.grey[100],
+                            "&:hover": {
+                                color: "#868dfb",
+                                backgroundColor: "#868dfb",
+                            },
+                            "&.ps-active": {
+                                // padding: "0 5px",
+                                color: "#6870fa",
+                                // color: "red",
+                                backgroundColor: colors.grey[700],
+                                borderRadius: "5rem"
+                                // backgroundColor: "purple",
+                            },
+                        },
+                        icon: {
+                            backgroundColor: "transparent",
+                        },
+                    }}
+                >
                     <MenuItem
                         onClick={() => setIsCollapsed(!isCollapsed)}
                         icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -144,6 +168,12 @@ const MySidebar = () => {
                             setSelected={setSelected}
                             navigate={navigate}
                          />
+
+                        <Typography
+                            variant="h6"
+                            color={colors.grey[700]}
+                            sx={{ m: "15px 0 5px 20px" }}
+                        >Data</Typography>
                         <Item
                             title="Manage Team"
                             to="/team"
@@ -168,6 +198,11 @@ const MySidebar = () => {
                             setSelected={setSelected}
                             navigate={navigate}
                          />
+                        <Typography
+                            variant="h6"
+                            color={colors.grey[700]}
+                            sx={{ m: "15px 0 5px 20px" }}
+                        >Pages</Typography>
                         <Item
                             title="Profile Form"
                             to="/form"
@@ -185,13 +220,18 @@ const MySidebar = () => {
                             navigate={navigate}
                          />
                         <Item
-                            title="DAQ Page"
+                            title="FAQ Page"
                             to="/faq"
                             icon={<HelpOutlineOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
                             navigate={navigate}
                          />
+                        <Typography
+                            variant="h6"
+                            color={colors.grey[700]}
+                            sx={{ m: "15px 0 5px 20px" }}
+                        >Charts</Typography>
                         <Item
                             title="Bar Chart"
                             to="/bar"
@@ -227,7 +267,7 @@ const MySidebar = () => {
                     </Box>
                 </Menu>
             </Sidebar>
-        </Box>
+        // </Box>
     );
 }
 

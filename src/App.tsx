@@ -4,11 +4,11 @@ import {Routes, Route} from "react-router-dom";
 import Topbar from "./pages/global/Topbar.tsx";
 import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import Sidebar from "./pages/global/Sidebar.tsx"
-// import Team from "./pages/global/Team.tsx"
-// import Invoices from "./pages/global/Invoices.tsx"
-// import Contacts from "./pages/global/Contacts.tsx"
+import Team from "./pages/team/index.tsx"
+import Invoices from "./pages/invoices/index.tsx"
+import Contacts from "./pages/contacts/index.tsx"
+import Form from "./pages/form/index.tsx"
 // import Bar from "./pages/global/Bar.tsx"
-// import Form from "./pages/global/Form.tsx"
 // import Line from "./pages/global/Line.tsx"
 // import Pie from "./pages/global/Pie.tsx"
 // import FAQ from "./pages/global/FAQ.tsx"
@@ -30,10 +30,10 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/eq" element={<Dashboard />} />
-                            {/*<Route path="/team" element={<Team />} />*/}
-                            {/*<Route path="/contacts" element={<Contacts />} />*/}
-                            {/*<Route path="/invoices" element={<Invoices />} />*/}
-                            {/*<Route path="/form" element={<Form />} />*/}
+                            <Route path="/team" element={<Team />} />
+                            <Route path="/contacts" element={<Contacts />} />
+                            <Route path="/invoices" element={<Invoices />} />
+                            <Route path="/form" element={<Form />} />
                             {/*<Route path="/bar" element={<Bar />} />*/}
                             {/*<Route path="/pie" element={<Pie />} />*/}
                             {/*<Route path="/line" element={<Line />} />*/}
