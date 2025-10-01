@@ -10,10 +10,10 @@ import Contacts from "./pages/contacts/index.tsx"
 import Form from "./pages/form/index.tsx"
 import Calendar from "./pages/calendar/index.tsx"
 import FAQ from "./pages/faq/index.tsx"
-// import Bar from "./pages/global/Bar.tsx"
-// import Line from "./pages/global/Line.tsx"
-// import Pie from "./pages/global/Pie.tsx"
-// import Geography from "./pages/global/Geography.tsx"
+import Bar from "./pages/bar/index.tsx"
+import Pie from "./pages/pie/index.tsx"
+import Line from "./pages/line/index.tsx"
+import PortfolioValue from "./pages/line/portfolioValue.tsx";
 
 
 function App() {
@@ -36,10 +36,10 @@ function App() {
                             <Route path="/form" element={<Form />} />
                             <Route path="/calendar" element={<Calendar />} />
                             <Route path="/faq" element={<FAQ />} />
-                            {/*<Route path="/bar" element={<Bar />} />*/}
-                            {/*<Route path="/pie" element={<Pie />} />*/}
-                            {/*<Route path="/line" element={<Line />} />*/}
-                            {/*<Route path="/geography" element={<Geography />} />*/}
+                            <Route path="/bar" element={<Bar />} />
+                            <Route path="/pie" element={<Pie />} />
+                            <Route path="/line" element={<Line />} />
+                            <Route path="/geography" element={<PortfolioValue />} />
                         </Routes>
 
                     </main>
