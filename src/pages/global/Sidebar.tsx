@@ -169,6 +169,15 @@ const MySidebar = () => {
                             navigate={navigate}
                          />
 
+                        <Item
+                            title="Main Dashboard"
+                            to="/portfolio-dashboard"
+                            icon={<HomeOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                            navigate={navigate}
+                        />
+
                         <Typography
                             variant="h6"
                             color={colors.grey[700]}

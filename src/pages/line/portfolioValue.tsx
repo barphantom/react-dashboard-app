@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
 import Header from "../../components/Header.tsx";
-import PortfolioChart from "../../components/PortfolioChart.tsx";
+import PortfolioChart from "../../components/PortfolioDashboard/PortfolioChart.tsx";
 
 
 const PortfolioValue = () => {

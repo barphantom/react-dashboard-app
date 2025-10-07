@@ -14,6 +14,8 @@ import Bar from "./pages/bar/index.tsx"
 import Pie from "./pages/pie/index.tsx"
 import Line from "./pages/line/index.tsx"
 import PortfolioValue from "./pages/line/portfolioValue.tsx";
+import MainDashboard from "./pages/dashboard/MainDashboard.tsx";
+import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
                         <Topbar />
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
+                            <Route path="/portfolio-dashboard" element={<MainDashboard />} />
+                            <Route path="/stock/:symbol" element={<PortfolioValue />} />
                             <Route path="/eq" element={<Dashboard />} />
                             <Route path="/team" element={<Team />} />
                             <Route path="/contacts" element={<Contacts />} />
@@ -39,9 +43,8 @@ function App() {
                             <Route path="/bar" element={<Bar />} />
                             <Route path="/pie" element={<Pie />} />
                             <Route path="/line" element={<Line />} />
-                            <Route path="/geography" element={<PortfolioValue />} />
+                            <Route path="/geography" element={<StockDetailsPage />} />
                         </Routes>
-
                     </main>
                 </div>
         </ThemeProvider>

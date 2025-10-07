@@ -1,5 +1,5 @@
 import { ResponsiveLine } from '@nivo/line'
-import { tokens } from "../themes.tsx"
+import { tokens } from "../../themes.tsx"
 import { useTheme } from "@mui/material";
 
 const data = [
@@ -47,7 +47,7 @@ const PortfolioChart = () => {
     return (
         <ResponsiveLine /* or Line for fixed dimensions */
             data={data}
-            margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+            margin={{ top: 20, right: 0, bottom: 20, left: 40 }}
             theme={{
                 grid: {
                     line: {
