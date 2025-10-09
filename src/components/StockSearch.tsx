@@ -5,7 +5,6 @@ import {searchStocks} from "../api/portfolioApi.tsx";
 import {type StockSearchResult} from "../types/stockTypes.tsx";
 import {useNavigate} from "react-router-dom";
 
-
 const StockSearch = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
