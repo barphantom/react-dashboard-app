@@ -1,3 +1,4 @@
+import api from "../api/axiosConfig.ts"
 import type {StockSearchResult} from "../types/stockTypes.tsx";
 
 interface PortfolioHistoryPoint {
@@ -10,6 +11,18 @@ export interface PortfolioHistoryData {
     data: PortfolioHistoryPoint[]
 }
 
+export interface PortfolioStats {
+    total_value: number,
+    profit_value: number,
+    profit_percent: number,
+    weekly_change_percent: number,
+}
+
+export const getPortfolioStats = async (portfolioId: number): Promise<PortfolioStats> => {
+    const response = await api.get(`portfolio/${portfolioId}/stats/`);
+    return response.data;
+}
+
 export const getPortfolioHistory = async (range: string): Promise<PortfolioHistoryData> => {
     const res = await fetch(`/api/portfolio/history?range=${range}`);
     if (!res.ok) {
@@ -19,31 +32,20 @@ export const getPortfolioHistory = async (range: string): Promise<PortfolioHisto
 }
 
 export const searchStocks = async (query: string): Promise<StockSearchResult[]> => {
-    // const res = await fetch(`/api/stocks/search?query=${query}`);
-    // if (!res.ok) {
-    //     throw new Error(`Failed to fetch stock search results for ${query}`);
-    // }
-    // return res.json();
-
     if (!query) return [];
 
-    // Symulacja oczekiwania na backend (dla UX realizmu)
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    try {
+        const response = await api.get("search/", {
+            params: {query}
+        })
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching stock search results:", error);
+        return [];
+    }
+}
 
-    // Mockowane dane — możesz potem rozbudować o więcej pól
-    const dummyStocks: StockSearchResult[] = [
-        { symbol: "AAPL", name: "Apple Inc." },
-        { symbol: "AAPL", name: "Allllllpple Inc." },
-        { symbol: "MSFT", name: "Microsoft Corporation" },
-        { symbol: "GOOGL", name: "Alphabet Inc." },
-        { symbol: "TSLA", name: "Tesla, Inc." },
-        { symbol: "NVDA", name: "NVIDIA Corporation" },
-        { symbol: "AMZN", name: "Amazon.com, Inc." },
-    ];
-
-    // Filtrowanie po wpisanym query (proste wyszukiwanie)
-    return dummyStocks.filter((stock) =>
-        stock.name.toLowerCase().includes(query.toLowerCase()) ||
-        stock.symbol.toLowerCase().includes(query.toLowerCase())
-    );
+export const getPortfolioChartData = async (portfolioId: number) => {
+    const response = await api.get(`portfolio/${portfolioId}/chart/`)
+    return response.data;
 }

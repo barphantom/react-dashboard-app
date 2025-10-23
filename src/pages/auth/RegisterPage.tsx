@@ -3,7 +3,8 @@ import {Box, TextField, Button, Typography} from '@mui/material';
 import image from '../../assets/images/Register-Image.svg'
 import {Formik, Form, Field, ErrorMessage, type FormikHelpers} from "formik";
 import * as Yup from 'yup';
-
+// import api from "../../api/axiosConfig.ts";
+import {register} from "../../api/auth.ts";
 
 interface RegisterFormValues {
     name: string;
@@ -33,26 +34,37 @@ const RegisterPage: React.FC = () => {
 
     const handleSubmit = async (
         values: RegisterFormValues,
-        {setSubmitting, resetForm}: FormikHelpers<RegisterFormValues>
+        {setSubmitting}: FormikHelpers<RegisterFormValues>
     ) => {
-        console.log("Form data: ", values);
-
         try {
-            const res = await fetch('http://localhost:8080/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(values),
-            })
-
-            if (res.ok) {
-                console.log("Form data: ", values);
+            // const response = await api.post("auth/register/", {
+            //     name: values.name,
+            //     lastName: values.lastName,
+            //     email: values.email,
+            //     password: values.password,
+            //     confirm_password: values.confirmPassword,
+            // })
+            // console.log("✅ Registration successful:", response.data);
+            //
+            // localStorage.setItem("accessToken", response.data.access)
+            // localStorage.setItem("refreshToken", response.data.refresh)
+            // localStorage.setItem("user", JSON.stringify(response.data.user))
+            await register(values.name, values.lastName, values.email, values.password, values.confirmPassword);
+            window.location.href = "/"
+        } catch (error: any) {
+            console.error("❌ Registration error:", error);
+            if (error.response?.data) {
+                const data = error.response.data;
+                const errorMessages = Object.values(data)
+                    .flat()
+                    .join("\n");
+                alert(errorMessages);
+            } else {
+                alert("Something went wrong during registration.");
             }
-
-        } catch (error) {
-            console.error('Register error:', error);
+        } finally {
+            setSubmitting(false)
         }
-
-        setSubmitting(false);
     };
 
     return (

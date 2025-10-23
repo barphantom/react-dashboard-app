@@ -3,28 +3,26 @@ import {Box, Typography, CircularProgress, Button, ButtonGroup, useTheme} from "
 import {tokens} from "../../themes.tsx";
 import {getPortfolioHistory, type PortfolioHistoryData} from "../../api/portfolioApi.tsx";
 import PortfolioChart from "./PortfolioChart.tsx";
-
-
-const ranges = ["1M", "3M", "1Y", "ALL"];
+import PortfolioChartNew from "./PortfolioChartNew.tsx";
 
 const PortfolioChartSection = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const [timeRange, setTimeRange] = useState("1M");
-    const [data, setData] = useState<PortfolioHistoryData | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    // const [timeRange, setTimeRange] = useState("1M");
+    // const [data, setData] = useState<PortfolioHistoryData | null>(null);
+    // const [loading, setLoading] = useState(false);
+    // const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        setLoading(true);
-        setError(null);
-
-        getPortfolioHistory(timeRange)
-            .then(setData)
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
-    }, [timeRange]);
+    // useEffect(() => {
+    //     setLoading(true);
+    //     setError(null);
+    //
+    //     getPortfolioHistory(timeRange)
+    //         .then(setData)
+    //         .catch(err => setError(err.message))
+    //         .finally(() => setLoading(false));
+    // }, [timeRange]);
 
 
     return (
@@ -42,33 +40,33 @@ const PortfolioChartSection = () => {
                 mb={2}
             >
                 <Typography variant="h3" color={colors.grey[400]}>Portfolio Value</Typography>
-                <ButtonGroup variant="outlined" color="primary">
-                    {ranges.map(range => (
-                        <Button
-                            key={range}
-                            variant={timeRange === range ? "contained" : "outlined"}
-                            onClick={() => setTimeRange(range)}
-                            size="small"
-                            sx={{
-                                color: colors.greenAccent[400],
-                                borderColor: colors.greenAccent[400],
-                                '&:hover': {
-                                    backgroundColor: colors.greenAccent[800],
-                                    borderColor: colors.greenAccent[400],
-                                },
-                                ...(timeRange === range && {
-                                    backgroundColor: colors.greenAccent[400],
-                                    color: colors.primary[400],
-                                    '&:hover': {
-                                        backgroundColor: colors.greenAccent[500],
-                                    }
-                                })
-                            }}
-                        >
-                            {range}
-                        </Button>
-                    ))}
-                </ButtonGroup>
+                {/*<ButtonGroup variant="outlined" color="primary">*/}
+                {/*    {ranges.map(range => (*/}
+                {/*        <Button*/}
+                {/*            key={range}*/}
+                {/*            variant={timeRange === range ? "contained" : "outlined"}*/}
+                {/*            onClick={() => setTimeRange(range)}*/}
+                {/*            size="small"*/}
+                {/*            sx={{*/}
+                {/*                color: colors.greenAccent[400],*/}
+                {/*                borderColor: colors.greenAccent[400],*/}
+                {/*                '&:hover': {*/}
+                {/*                    backgroundColor: colors.greenAccent[800],*/}
+                {/*                    borderColor: colors.greenAccent[400],*/}
+                {/*                },*/}
+                {/*                ...(timeRange === range && {*/}
+                {/*                    backgroundColor: colors.greenAccent[400],*/}
+                {/*                    color: colors.primary[400],*/}
+                {/*                    '&:hover': {*/}
+                {/*                        backgroundColor: colors.greenAccent[500],*/}
+                {/*                    }*/}
+                {/*                })*/}
+                {/*            }}*/}
+                {/*        >*/}
+                {/*            {range}*/}
+                {/*        </Button>*/}
+                {/*    ))}*/}
+                {/*</ButtonGroup>*/}
             </Box>
 
             <Box
@@ -79,16 +77,16 @@ const PortfolioChartSection = () => {
                 position="relative"
                 // minHeight="200px"
             >
-                {loading && (
-                    <Box
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        height="100%"
-                    >
-                        <CircularProgress />
-                    </Box>
-                )}
+                {/*{loading && (*/}
+                {/*    <Box*/}
+                {/*        display="flex"*/}
+                {/*        justifyContent="center"*/}
+                {/*        alignItems="center"*/}
+                {/*        height="100%"*/}
+                {/*    >*/}
+                {/*        <CircularProgress />*/}
+                {/*    </Box>*/}
+                {/*)}*/}
 
                 {/*{error && (*/}
                 {/*    <Box*/}
@@ -108,6 +106,7 @@ const PortfolioChartSection = () => {
                         width="100%"
                     >
                         <PortfolioChart />
+                        {/*<PortfolioChartNew portfolioId={3}/>*/}
                     </Box>
                 {/*)}*/}
 

@@ -1,6 +1,8 @@
-import { ResponsiveLine } from '@nivo/line'
+import {useEffect, useState} from "react";
+import { useTheme, Box, Typography } from "@mui/material";
 import { tokens } from "../../themes.tsx"
-import { useTheme } from "@mui/material";
+import { ResponsiveLine } from '@nivo/line'
+import {getPortfolioChartData} from "../../api/portfolioApi.tsx";
 
 const data = [
     {
@@ -40,12 +42,62 @@ const data = [
     },
 ]
 
+interface NivoDataPoint {
+    x: string;  // data w formacie "YYYY-MM-DD"
+    y: number;  // wartość portfela
+}
+
+interface NivoSeries {
+    id: string;        // nazwa serii, np. "Portfolio"
+    data: NivoDataPoint[];
+}
+
+
 const PortfolioChart = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const [data, setData] = useState<NivoSeries[] | null>(null);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const rawData = await getPortfolioChartData(3);
+                const formattedData = formatChartData(rawData);
+                setData(formattedData);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, []);
+
+
+    function formatChartData(rawData: { time: string; value: number }[]) {
+        return [
+            {
+                id: "Portfolio", // nazwa serii, możesz zmienić
+                data: rawData.map(item => ({
+                    x: item.time,
+                    y: item.value
+                }))
+            }
+        ];
+    }
+
+    if (data === null) {
+        return (
+            <Box>
+                <Typography>
+                    Loading...
+                </Typography>
+            </Box>
+        )
+    }
+
     return (
-        <ResponsiveLine /* or Line for fixed dimensions */
+        <ResponsiveLine
             data={data}
             margin={{ top: 20, right: 0, bottom: 20, left: 40 }}
             theme={{

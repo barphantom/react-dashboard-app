@@ -15,7 +15,7 @@ const StockSearch = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (query.length < 2) {
+        if (query.length < 3) {
             setOptions([]);
             return;
         }

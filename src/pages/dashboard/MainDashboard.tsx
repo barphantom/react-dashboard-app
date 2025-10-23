@@ -1,15 +1,46 @@
-import {Box, Typography, useTheme} from '@mui/material';
+import {useEffect, useState} from "react";
+import {Box, CircularProgress, Typography, useTheme} from '@mui/material';
 import {tokens} from "../../themes.tsx";
 import StatBox2 from "../../components/StatBox2.tsx";
 import PortfolioChartSection from "../../components/PortfolioDashboard/PortfolioChartSection.tsx";
 import Header from "../../components/Header.tsx";
 import PieChart from "../../components/PieChart.tsx";
 import EmailIcon from "@mui/icons-material/Email";
+import {getPortfolioStats, type PortfolioStats} from "../../api/portfolioApi.tsx";
 
 
 const MainDashboard = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const portfolioId = 3
+
+    const [stats, setStats] = useState<PortfolioStats | null>(null);
+    const [loadingStats, setLoadingStats] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const data = await getPortfolioStats(portfolioId);
+                setStats(data);
+            } catch (error) {
+                console.error("Failed to load portfolio stats", error);
+            } finally {
+                setLoadingStats(false);
+            }
+        }
+        fetchStats();
+    }, [portfolioId]);
+
+    if (loadingStats) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                <CircularProgress />
+                <Typography>
+                    Loading...
+                </Typography>
+            </Box>
+        );
+    }
 
     return (
         <Box m="20px">
@@ -34,7 +65,7 @@ const MainDashboard = () => {
                 >
                     <StatBox2
                         title="Total Value"
-                        amount="1'000'000$"
+                        amount={`$${stats?.total_value.toLocaleString()}`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
                         increase="+14"
                     />
@@ -53,7 +84,7 @@ const MainDashboard = () => {
                 >
                     <StatBox2
                         title="Profit"
-                        amount="52'000$"
+                        amount={`$${stats?.profit_value.toLocaleString()}`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
                         increase="+5.2"
                     />
@@ -71,8 +102,8 @@ const MainDashboard = () => {
                     }}
                 >
                     <StatBox2
-                        title="Annual Return"
-                        amount="52.12%"
+                        title="Profit percent"
+                        amount={`${stats?.profit_percent.toFixed(2)}%`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
                         increase="+14"
                     />
@@ -90,8 +121,8 @@ const MainDashboard = () => {
                     }}
                 >
                     <StatBox2
-                        title="Today"
-                        amount="112.34$"
+                        title="Weekly change"
+                        amount={`${stats?.weekly_change_percent.toFixed(2)}%`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
                         increase="+0.12"
                     />

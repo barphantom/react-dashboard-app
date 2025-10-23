@@ -3,7 +3,8 @@ import {Box, TextField, Button, Typography} from '@mui/material';
 import image from '../../assets/images/Login-Image.svg'
 import {Formik, Form, Field, ErrorMessage, type FormikHelpers} from "formik";
 import * as Yup from 'yup';
-
+// import api from '../../api/axiosConfig.ts'
+import {login} from "../../api/auth.ts";
 
 interface LoginFormValues {
     email: string;
@@ -25,19 +26,28 @@ const LoginPage: React.FC = () => {
         values: LoginFormValues,
         {setSubmitting}: FormikHelpers<LoginFormValues>
     ) => {
-        console.log("Form data: ", values);
-
-        const res = await fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(values),
-        })
-
-        if (res.ok) {
-
+        try {
+            // const response = await api.post("auth/login/", {
+            //     email: values.email,
+            //     password: values.password,
+            // })
+            // console.log("Login credentials sent!", response.data)
+            //
+            // localStorage.setItem("access", response.data.access)
+            // localStorage.setItem("refresh", response.data.refresh)
+            // localStorage.setItem("user", JSON.stringify(response.data.user))
+            await login(values.email, values.password);
+            window.location.href = "/"
+        } catch (error: any) {
+            console.error("❌ Login error:", error);
+            alert(
+                error.response?.data?.error ||
+                error.response?.data?.detail ||
+                "Invalid credentials"
+            );
+        } finally {
+            setSubmitting(false)
         }
-
-        setSubmitting(false);
     };
 
     return (

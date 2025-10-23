@@ -2,6 +2,7 @@ import { ColorModeContext, useMode } from "./themes"
 import { CssBaseline, ThemeProvider } from "@mui/material"
 import {Routes, Route} from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
+import PrivateRoute from "./components/PrivateRoute";
 
 // Public pages
 import LoginPage from "./pages/auth/LoginPage.tsx"
@@ -21,7 +22,7 @@ import Line from "./pages/line/index.tsx"
 // import PortfolioValue from "./pages/line/portfolioValue.tsx";
 import MainDashboard from "./pages/dashboard/MainDashboard.tsx";
 import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
-
+import PortfolioChartNew from "./components/PortfolioDashboard/PortfolioChartNew.tsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -36,23 +37,26 @@ function App() {
                     <Route path="/register" element={<RegisterPage />} />
 
                     {/* Private routes */}
-                    <Route element={<AppLayout />}>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/portfolio-dashboard" element={<MainDashboard />} />
-                        <Route path="/stock/:symbol" element={<StockDetailsPage />} />
-                        <Route path="/eq" element={<Dashboard />} />
-                        <Route path="/team" element={<Team />} />
-                        <Route path="/contacts" element={<Contacts />} />
-                        <Route path="/invoices" element={<Invoices />} />
-                        <Route path="/form" element={<Form />} />
-                        <Route path="/calendar" element={<Calendar />} />
-                        <Route path="/faq" element={<FAQ />} />
-                        <Route path="/bar" element={<Bar />} />
-                        <Route path="/pie" element={<Pie />} />
-                        <Route path="/line" element={<Line />} />
-                        <Route path="/geography" element={<StockDetailsPage />} />
-                        <Route path="/login" element={<LoginPage />} />
+                    <Route element={<PrivateRoute />}>
+                        <Route element={<AppLayout />}>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/portfolio-dashboard" element={<MainDashboard />} />
+                            <Route path="/stock/:symbol" element={<StockDetailsPage />} />
+                            <Route path="/eq" element={<Dashboard />} />
+                            <Route path="/team" element={<Team />} />
+                            <Route path="/contacts" element={<Contacts />} />
+                            <Route path="/invoices" element={<Invoices />} />
+                            <Route path="/form" element={<Form />} />
+                            <Route path="/calendar" element={<Calendar />} />
+                            <Route path="/faq" element={<FAQ />} />
+                            <Route path="/bar" element={<Bar />} />
+                            <Route path="/pie" element={<Pie />} />
+                            <Route path="/line" element={<Line />} />
+                            <Route path="/geography" element={<PortfolioChartNew portfolioId={3} />} />
+                            {/*<Route path="/login" element={<LoginPage />} />*/}
+                        </Route>
                     </Route>
+
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>

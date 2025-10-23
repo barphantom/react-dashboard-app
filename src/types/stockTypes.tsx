@@ -22,3 +22,12 @@ export interface Candle {
 export interface StockChartSectionProps {
     symbol: string;
 }
+
+export interface PortfolioDataPoint {
+    time: string;
+    value: number;
+}
+
+export type PortfolioChartNewProps = {
+    portfolioId: number
+}
