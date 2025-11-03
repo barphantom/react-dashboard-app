@@ -4,20 +4,25 @@ import {tokens} from "../../themes.tsx";
 import StatBox2 from "../../components/StatBox2.tsx";
 import PortfolioChartSection from "../../components/PortfolioDashboard/PortfolioChartSection.tsx";
 import Header from "../../components/Header.tsx";
-import PieChart from "../../components/PieChart.tsx";
+// import PieChart from "../../components/PieChart.tsx";
 import EmailIcon from "@mui/icons-material/Email";
 import {getPortfolioStats, type PortfolioStats} from "../../api/portfolioApi.tsx";
+import PortfolioAssetsList from "../../components/PortfolioDashboard/PortfolioAssetsList.tsx";
+import PortfolioPieChart from "../../components/PortfolioDashboard/PortfolioPieChart.tsx";
+import {usePortfolio} from "../../components/context/usePortfolio.tsx";
 
 
 const MainDashboard = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const portfolioId = 3
+    const { portfolioId, loading: loadingPortfolio} = usePortfolio()
 
     const [stats, setStats] = useState<PortfolioStats | null>(null);
     const [loadingStats, setLoadingStats] = useState<boolean>(false);
 
     useEffect(() => {
+        if (!portfolioId) return;
+
         const fetchStats = async () => {
             try {
                 const data = await getPortfolioStats(portfolioId);
@@ -31,14 +36,20 @@ const MainDashboard = () => {
         fetchStats();
     }, [portfolioId]);
 
-    if (loadingStats) {
+    if (loadingStats || loadingPortfolio) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                 <CircularProgress />
-                <Typography>
-                    Loading...
-                </Typography>
+                <Typography ml={2}>Loading portfolio...</Typography>
             </Box>
+        );
+    }
+
+    if (!portfolioId) {
+        return (
+            <Typography color="error" align="center">
+                No portfolio found for this user.
+            </Typography>
         );
     }
 
@@ -160,9 +171,10 @@ const MainDashboard = () => {
                         borderRadius: "1.5rem",
                     }}
                 >
-                    <Typography>
-                        Assets
-                    </Typography>
+                    {/*<Typography>*/}
+                    {/*    Assets*/}
+                    {/*</Typography>*/}
+                    <PortfolioAssetsList portfolioId={3} />
                 </Box>
 
                 <Box
@@ -177,11 +189,12 @@ const MainDashboard = () => {
                         borderRadius: "1.5rem",
                     }}
                 >
-                    <Typography>
-                        Portfolio by sector
+                    <Typography variant="h4" mb={0} color={colors.grey[300]}>
+                        Portfolio Composition
                     </Typography>
-                    <Box height="500px" width="300px" mt="-20px">
-                        <PieChart />
+                    <Box height="500px" width="100%" mt="-20px">
+                        {/*<PieChart />*/}
+                        <PortfolioPieChart portfolioId={3} />
                     </Box>
                 </Box>
             </Box>

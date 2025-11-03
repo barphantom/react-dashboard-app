@@ -1,99 +1,37 @@
-import {useEffect, useState} from "react";
-import { useTheme, Box, Typography } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../themes.tsx"
 import { ResponsiveLine } from '@nivo/line'
-import {getPortfolioChartData} from "../../api/portfolioApi.tsx";
-
-const data = [
-    {
-        id: "Portfolio Value",
-        data: [
-            { x: "2025-09-01", y: 10000 },
-            { x: "2025-09-02", y: 10050 },
-            { x: "2025-09-03", y: 10120 },
-            { x: "2025-09-04", y: 10080 },
-            { x: "2025-09-05", y: 10250 },
-            { x: "2025-09-06", y: 10280 },
-            { x: "2025-09-07", y: 10320 },
-            { x: "2025-09-08", y: 10200 },
-            { x: "2025-09-09", y: 10150 },
-            { x: "2025-09-10", y: 9800 },
-            { x: "2025-09-11", y: 9850 },
-            { x: "2025-09-12", y: 9900 },
-            { x: "2025-09-13", y: 10020 },
-            { x: "2025-09-14", y: 10080 },
-            { x: "2025-09-15", y: 10500 },
-            { x: "2025-09-16", y: 10450 },
-            { x: "2025-09-17", y: 10380 },
-            { x: "2025-09-18", y: 10420 },
-            { x: "2025-09-19", y: 10550 },
-            { x: "2025-09-20", y: 11000 },
-            { x: "2025-09-21", y: 10950 },
-            { x: "2025-09-22", y: 10880 },
-            { x: "2025-09-23", y: 10720 },
-            { x: "2025-09-24", y: 10650 },
-            { x: "2025-09-25", y: 10780 },
-            { x: "2025-09-26", y: 10850 },
-            { x: "2025-09-27", y: 10900 },
-            { x: "2025-09-28", y: 11020 },
-            { x: "2025-09-29", y: 11100 },
-            { x: "2025-09-30", y: 11200 },
-        ],
-    },
-]
-
-interface NivoDataPoint {
-    x: string;  // data w formacie "YYYY-MM-DD"
-    y: number;  // wartość portfela
-}
-
-interface NivoSeries {
-    id: string;        // nazwa serii, np. "Portfolio"
-    data: NivoDataPoint[];
-}
+import type {PortfolioChartProps} from "../../types/stockTypes.tsx";
 
 
-const PortfolioChart = () => {
+const PortfolioChart = ({ data }: PortfolioChartProps) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const [data, setData] = useState<NivoSeries[] | null>(null);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const rawData = await getPortfolioChartData(3);
-                const formattedData = formatChartData(rawData);
-                setData(formattedData);
-            } catch (error) {
-                console.log(error);
-            }
+    const getDynamicTickInterval = () => {
+        if (!data || data.length === 0) {
+            return "every 7 days";
         }
-        fetchData();
-    }, []);
 
-
-    function formatChartData(rawData: { time: string; value: number }[]) {
-        return [
-            {
-                id: "Portfolio", // nazwa serii, możesz zmienić
-                data: rawData.map(item => ({
-                    x: item.time,
-                    y: item.value
-                }))
-            }
-        ];
-    }
-
-    if (data === null) {
-        return (
-            <Box>
-                <Typography>
-                    Loading...
-                </Typography>
-            </Box>
+        const firstDate = new Date(data[0].data[0].x)
+        const lastDate = new Date(data[0].data[data[0].data.length - 1].x)
+        const diffDays = Math.floor(
+            (lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24)
         )
+
+        console.log("Diff days: ", diffDays)
+
+        if (diffDays < 10) {
+            return "every 1 days"
+        } else if (diffDays < 30) {
+            return "every 3 days"
+        } else if (diffDays < 90) {
+            return "every week"
+        } else if (diffDays < 365) {
+            return "every month"
+        } else {
+            return "every 3 months"
+        }
     }
 
     return (
@@ -150,10 +88,10 @@ const PortfolioChart = () => {
                 precision: "day",
             }}
             xFormat="time:%d-%m-%Y"
-            yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+            yScale={{ type: 'linear', min: 'auto', max: 'auto', clamp: true, stacked: true, reverse: false }}
             axisBottom={{
                 format: "%d.%m.%y",        // np. 01.09, 05.09
-                tickValues: "every 2 days", // co 3 dni
+                tickValues: getDynamicTickInterval(), // co ile dni wyświetlać wartość na Y
                 legend: undefined,
                 legendOffset: 36,
                 legendPosition: "middle",
@@ -186,7 +124,7 @@ const PortfolioChart = () => {
             ]}
             fill={[{ match: "*", id: "blueGradient" }]}
             enableArea={true}
-            areaBaselineValue={9800}
+            // areaBaselineValue={"max"}
             areaOpacity={0.2}
             useMesh={true}
             enablePoints={false}
@@ -202,7 +140,7 @@ const PortfolioChart = () => {
                         whiteSpace: "nowrap"
                     }}
                 >
-                    {point.data.yFormatted} PLN
+                    {point.data.yFormatted} USD
                 </div>
             )}
         />

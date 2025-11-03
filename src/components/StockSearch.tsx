@@ -39,7 +39,7 @@ const StockSearch = () => {
             onInputChange={(_, value) => setQuery(value)}
             onChange={(_, value) => {
                 if (value) {
-                    navigate(`/stock/${value.sybmol}`);
+                    navigate(`/stock/${value.symbol}`);
                 }
             }}
             sx={{
