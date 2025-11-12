@@ -25,6 +25,8 @@ import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
 import PortfolioDetails from "./pages/portfolioDetails/PortfolioDetails.tsx";
 import PortfolioChartNew from "./components/PortfolioDashboard/PortfolioChartNew.tsx";
 import {PortfolioIdProvider} from "./components/context/PortfolioIdProvider.tsx";
+import RecommendationsPage from "./pages/recommendations/RecommendationsPage.tsx";
+
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -45,6 +47,7 @@ function App() {
                                 <Route path="/" element={<Dashboard />} />
                                 <Route path="/portfolio-dashboard" element={<MainDashboard />} />
                                 <Route path="/stock/:symbol" element={<StockDetailsPage />} />
+                                <Route path="/recommendations" element={<RecommendationsPage />} />
                                 <Route path="/eq" element={<Dashboard />} />
                                 <Route path="/team" element={<PortfolioDetails />} />
                                 <Route path="/contacts" element={<Contacts />} />

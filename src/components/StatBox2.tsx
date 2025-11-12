@@ -9,7 +9,7 @@ type StatsBoxType = {
     increase?: string,
 }
 
-const StatsBox = ({title, amount, icon, increase} : StatsBoxType) => {
+const StatsBox = ({title, amount, icon} : StatsBoxType) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -22,9 +22,9 @@ const StatsBox = ({title, amount, icon, increase} : StatsBoxType) => {
                 <Typography variant="h2" sx={{color: colors.greenAccent[500]}}>
                     {amount}
                 </Typography>
-                <Typography variant="h5" fontStyle="italic" sx={{color: colors.grey[100]}}>
-                    {increase}%
-                </Typography>
+                {/*<Typography variant="h5" fontStyle="italic" sx={{color: colors.grey[100]}}>*/}
+                {/*    {increase}%*/}
+                {/*</Typography>*/}
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
                 {icon}

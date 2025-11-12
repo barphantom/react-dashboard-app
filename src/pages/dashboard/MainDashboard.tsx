@@ -78,7 +78,7 @@ const MainDashboard = () => {
                         title="Total Value"
                         amount={`$${stats?.total_value.toLocaleString()}`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
-                        increase="+14"
+                        // increase="+14"
                     />
                 </Box>
 
@@ -97,7 +97,7 @@ const MainDashboard = () => {
                         title="Profit"
                         amount={`$${stats?.profit_value.toLocaleString()}`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
-                        increase="+5.2"
+                        // increase="+5.2"
                     />
                 </Box>
 
@@ -116,7 +116,7 @@ const MainDashboard = () => {
                         title="Profit percent"
                         amount={`${stats?.profit_percent.toFixed(2)}%`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
-                        increase="+14"
+                        // increase="+14"
                     />
                 </Box>
 
@@ -135,7 +135,7 @@ const MainDashboard = () => {
                         title="Weekly change"
                         amount={`${stats?.weekly_change_percent.toFixed(2)}%`}
                         icon={<EmailIcon sx={{color: colors.greenAccent[600], fontSize: "36px"}} />}
-                        increase="+0.12"
+                        // increase="+0.12"
                     />
                 </Box>
 
@@ -165,15 +165,16 @@ const MainDashboard = () => {
                         gridColumn: "span 4",
                         gridRow: "span 2",
                         display: "flex",
+                        flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
                         backgroundColor: colors.primary[400],
                         borderRadius: "1.5rem",
                     }}
                 >
-                    {/*<Typography>*/}
-                    {/*    Assets*/}
-                    {/*</Typography>*/}
+                    <Typography variant="h4" mt={1} mb={0} color={colors.grey[300]}>
+                        Assets
+                    </Typography>
                     <PortfolioAssetsList portfolioId={3} />
                 </Box>
 
@@ -189,7 +190,7 @@ const MainDashboard = () => {
                         borderRadius: "1.5rem",
                     }}
                 >
-                    <Typography variant="h4" mb={0} color={colors.grey[300]}>
+                    <Typography variant="h4" mt={1} mb={0} color={colors.grey[300]}>
                         Portfolio Composition
                     </Typography>
                     <Box height="500px" width="100%" mt="-20px">
