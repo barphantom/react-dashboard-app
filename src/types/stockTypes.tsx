@@ -51,6 +51,12 @@ export interface PortfolioStock {
     purchase_date: string; // YYYY-MM-DD
 }
 
+export interface PortfolioCompositionResponse {
+    data: NivoPieItem[];
+    warnings?: string[];
+    error?: string | null;
+}
+
 export interface NivoPieItem {
     id: string;
     label: string;

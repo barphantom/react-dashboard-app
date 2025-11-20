@@ -1,5 +1,11 @@
 import api from "../api/axiosConfig.ts"
-import type {StockSearchResult, PortfolioStock, NivoPieItem, Candle} from "../types/stockTypes.tsx";
+import type {
+    StockSearchResult,
+    PortfolioStock,
+    // NivoPieItem,
+    Candle,
+    PortfolioCompositionResponse
+} from "../types/stockTypes.tsx";
 
 interface PortfolioHistoryPoint {
     x: string
@@ -55,9 +61,9 @@ export const getPortfolioStocks = async (portfolioId: number): Promise<Portfolio
     return response.data;
 }
 
-export const getPortfolioComposition = async (portfolioId: number): Promise<NivoPieItem[]> => {
+export const getPortfolioComposition = async (portfolioId: number): Promise<PortfolioCompositionResponse> => {
     const response = await api.get(`/portfolio/${portfolioId}/composition/`);
-    return response.data.data;
+    return response.data;
 };
 
 export const getOHLCVData = async (symbol: string): Promise<Candle[]> => {

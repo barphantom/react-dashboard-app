@@ -3,7 +3,7 @@ import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../themes.tsx";
 import { getPortfolioComposition } from "../../api/portfolioApi.tsx";
-import type { NivoPieItem } from "../../types/stockTypes.tsx";
+import type {NivoPieItem, PortfolioCompositionResponse} from "../../types/stockTypes.tsx";
 
 
 interface PortfolioPieChartProps {
@@ -21,11 +21,23 @@ const PortfolioPieChart = ({ portfolioId }: PortfolioPieChartProps) => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
+            setError(null);
+
             try {
-                const result = await getPortfolioComposition(portfolioId);
-                setData(result);
+                const result: PortfolioCompositionResponse = await getPortfolioComposition(portfolioId);
+
+                if (result.error) {
+                    setError(result.error);
+                    setData([]);
+                    return;
+                }
+                console.log(result);
+                console.log(result.data);
+                setData(result.data ?? [])
+
             } catch (err: any) {
-                setError(err.message || "Error fetching composition data");
+                setError(err?.message || "Error fetching composition data");
+                setData([]);
             } finally {
                 setLoading(false);
             }
@@ -52,9 +64,11 @@ const PortfolioPieChart = ({ portfolioId }: PortfolioPieChartProps) => {
 
     if (data.length === 0) {
         return (
-            <Typography align="center" color={colors.grey[400]}>
-                No assets to display
-            </Typography>
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                <Typography color={colors.grey[400]} textAlign="center">
+                    No assets to display
+                </Typography>
+            </Box>
         );
     }
 
@@ -94,7 +108,7 @@ const PortfolioPieChart = ({ portfolioId }: PortfolioPieChartProps) => {
                 {
                     anchor: "right",
                     direction: "column",
-                    translateX: 130,
+                    translateX: 50,
                     itemWidth: 100,
                     itemHeight: 20,
                     itemsSpacing: 4,

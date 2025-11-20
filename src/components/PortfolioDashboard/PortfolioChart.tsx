@@ -9,7 +9,7 @@ const PortfolioChart = ({ data }: PortfolioChartProps) => {
     const colors = tokens(theme.palette.mode);
 
     const getDynamicTickInterval = () => {
-        if (!data || data.length === 0) {
+        if (!data || data.length === 0 || !data[0].data || data[0].data.length === 0) {
             return "every 7 days";
         }
 

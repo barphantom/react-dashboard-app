@@ -4,7 +4,6 @@ import {tokens} from "../../themes.tsx";
 import StatBox2 from "../../components/StatBox2.tsx";
 import PortfolioChartSection from "../../components/PortfolioDashboard/PortfolioChartSection.tsx";
 import Header from "../../components/Header.tsx";
-// import PieChart from "../../components/PieChart.tsx";
 import EmailIcon from "@mui/icons-material/Email";
 import {getPortfolioStats, type PortfolioStats} from "../../api/portfolioApi.tsx";
 import PortfolioAssetsList from "../../components/PortfolioDashboard/PortfolioAssetsList.tsx";
@@ -148,15 +147,13 @@ const MainDashboard = () => {
                         flexDirection: "column",
                         backgroundColor: colors.primary[400],
                         borderRadius: "1.5rem",
-                        p: 2,
+                        p: 1,
                         position: "relative",
                         // justifyContent: "center",
                         // alignItems: "center",
                     }}
                 >
-                    {/*<Box>*/}
-                        <PortfolioChartSection />
-                    {/*</Box>*/}
+                    <PortfolioChartSection portfolioId={portfolioId}/>
                 </Box>
 
                 {/* Row 3 */}
@@ -172,10 +169,21 @@ const MainDashboard = () => {
                         borderRadius: "1.5rem",
                     }}
                 >
-                    <Typography variant="h4" mt={1} mb={0} color={colors.grey[300]}>
-                        Assets
-                    </Typography>
-                    <PortfolioAssetsList portfolioId={3} />
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        width="100%"
+                        mb={2}
+                    >
+                        <Typography variant="h4" mt={1} mb={0} color={colors.grey[300]}>
+                            Assets
+                        </Typography>
+
+                    </Box>
+                    <Box height="100%" width="100%">
+                        <PortfolioAssetsList portfolioId={portfolioId} />
+                    </Box>
                 </Box>
 
                 <Box
@@ -190,12 +198,19 @@ const MainDashboard = () => {
                         borderRadius: "1.5rem",
                     }}
                 >
-                    <Typography variant="h4" mt={1} mb={0} color={colors.grey[300]}>
-                        Portfolio Composition
-                    </Typography>
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        width="100%"
+                        mb={2}
+                    >
+                        <Typography variant="h4" mt={1} mb={0} color={colors.grey[300]}>
+                            Portfolio Composition
+                        </Typography>
+                    </Box>
                     <Box height="500px" width="100%" mt="-20px">
-                        {/*<PieChart />*/}
-                        <PortfolioPieChart portfolioId={3} />
+                        <PortfolioPieChart portfolioId={portfolioId} />
                     </Box>
                 </Box>
             </Box>

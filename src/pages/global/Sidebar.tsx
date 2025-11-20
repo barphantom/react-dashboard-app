@@ -5,8 +5,6 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material"
 import { tokens } from "../../themes.tsx";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
-import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
-import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
@@ -66,11 +64,15 @@ const MySidebar = () => {
                     backgroundColor: colors.primary[400],
                     color: colors.grey[100],
                     border: "none",
+                    position: "sticky",
+                    top: 0,
                     height: "100vh",
+                    zIndex: 100,
                     transition: "all 0.3s ease",
                 },
                 ".ps-sidebar-container": {
                     backgroundColor: colors.blueAccent[800],
+                    height: "100%",
                 },
             }}
         >
@@ -156,35 +158,6 @@ const MySidebar = () => {
                 {/* Profile section */}
                 {!isCollapsed && (
                     <Box mb="25px" px="20px">
-                        {/*<Box display="flex" justifyContent="center" alignItems="center">*/}
-                        {/*    <Box*/}
-                        {/*        sx={{*/}
-                        {/*            width: "100px",*/}
-                        {/*            height: "100px",*/}
-                        {/*            borderRadius: "50%",*/}
-                        {/*            backgroundColor: colors.primary[500],*/}
-                        {/*            display: "flex",*/}
-                        {/*            alignItems: "center",*/}
-                        {/*            justifyContent: "center",*/}
-                        {/*            overflow: "hidden",*/}
-                        {/*            cursor: "pointer",*/}
-                        {/*            border: `3px solid ${colors.blueAccent[700]}`,*/}
-                        {/*            transition: "all 0.3s ease",*/}
-                        {/*            "&:hover": {*/}
-                        {/*                border: `3px solid ${colors.blueAccent[500]}`,*/}
-                        {/*                transform: "scale(1.05)",*/}
-                        {/*            }*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        <img*/}
-                        {/*            alt="profile-user"*/}
-                        {/*            width="100%"*/}
-                        {/*            height="100%"*/}
-                        {/*            src={`../../assets/user.png`}*/}
-                        {/*            style={{ objectFit: "cover" }}*/}
-                        {/*        />*/}
-                        {/*    </Box>*/}
-                        {/*</Box>*/}
                         <Box textAlign="center">
                             <Typography
                                 variant="h2"
@@ -192,7 +165,7 @@ const MySidebar = () => {
                                 fontWeight="bold"
                                 sx={{ m: "10px 0 0 0" }}
                             >
-                                Bartek Dobrzański
+                                - -
                             </Typography>
                             <Typography
                                 variant="h5"
@@ -207,15 +180,6 @@ const MySidebar = () => {
 
                 {/* Menu items */}
                 <Box paddingLeft={isCollapsed ? undefined : "0"}>
-                    {/*<Item*/}
-                    {/*    title="Dashboard"*/}
-                    {/*    to="/eq"*/}
-                    {/*    icon={<HomeOutlinedIcon />}*/}
-                    {/*    selected={selected}*/}
-                    {/*    setSelected={setSelected}*/}
-                    {/*    navigate={navigate}*/}
-                    {/*/>*/}
-
                     <Item
                         title="Main Dashboard"
                         to="/portfolio-dashboard"
@@ -251,22 +215,6 @@ const MySidebar = () => {
                         setSelected={setSelected}
                         navigate={navigate}
                     />
-                    {/*<Item*/}
-                    {/*    title="Contacts Information"*/}
-                    {/*    to="/contacts"*/}
-                    {/*    icon={<ContactsOutlinedIcon />}*/}
-                    {/*    selected={selected}*/}
-                    {/*    setSelected={setSelected}*/}
-                    {/*    navigate={navigate}*/}
-                    {/*/>*/}
-                    {/*<Item*/}
-                    {/*    title="Invoices Balances"*/}
-                    {/*    to="/invoices"*/}
-                    {/*    icon={<ReceiptOutlinedIcon />}*/}
-                    {/*    selected={selected}*/}
-                    {/*    setSelected={setSelected}*/}
-                    {/*    navigate={navigate}*/}
-                    {/*/>*/}
 
                     <Typography
                         variant="h6"
@@ -335,14 +283,6 @@ const MySidebar = () => {
                         setSelected={setSelected}
                         navigate={navigate}
                     />
-                    {/*<Item*/}
-                    {/*    title="Geography Chart"*/}
-                    {/*    to="/geography"*/}
-                    {/*    icon={<MapOutlinedIcon/>}*/}
-                    {/*    selected={selected}*/}
-                    {/*    setSelected={setSelected}*/}
-                    {/*    navigate={navigate}*/}
-                    {/*/>*/}
                 </Box>
             </Menu>
         </Sidebar>

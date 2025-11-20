@@ -51,9 +51,11 @@ const PortfolioAssetsList = ({ portfolioId }: PortfolioAssetsListProps) => {
 
     if (stocks.length === 0) {
         return (
-            <Typography align="center" color={colors.grey[400]}>
-                No assets in portfolio
-            </Typography>
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%" pb="20px">
+                <Typography align="center" color={colors.grey[400]}>
+                    No assets in portfolio
+                </Typography>
+            </Box>
         );
     }
 
