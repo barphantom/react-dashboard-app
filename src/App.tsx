@@ -25,6 +25,7 @@ import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
 import PortfolioDetails from "./pages/portfolioDetails/PortfolioDetails.tsx";
 import PortfolioChartNew from "./components/PortfolioDashboard/PortfolioChartNew.tsx";
 import {PortfolioIdProvider} from "./components/context/PortfolioIdProvider.tsx";
+import {UserProvider} from "./components/context/UserProvider.tsx";
 import RecommendationsPage from "./pages/recommendations/RecommendationsPage.tsx";
 
 
@@ -43,22 +44,24 @@ function App() {
                     {/* Private routes */}
                     <Route element={<PrivateRoute />}>
                         <Route element={<PortfolioIdProvider />}>
-                            <Route element={<AppLayout />}>
-                                <Route path="/" element={<Navigate to="/portfolio-dashboard" replace/>} />
-                                <Route path="/portfolio-dashboard" element={<MainDashboard />} />
-                                <Route path="/stock/:symbol" element={<StockDetailsPage />} />
-                                <Route path="/recommendations" element={<RecommendationsPage />} />
-                                <Route path="/dashboard" element={<Dashboard />} />
-                                <Route path="/team" element={<PortfolioDetails />} />
-                                <Route path="/contacts" element={<Contacts />} />
-                                <Route path="/invoices" element={<Invoices />} />
-                                <Route path="/form" element={<ProfileForm />} />
-                                <Route path="/calendar" element={<Calendar />} />
-                                <Route path="/faq" element={<FAQ />} />
-                                <Route path="/bar" element={<Bar />} />
-                                <Route path="/pie" element={<Pie />} />
-                                <Route path="/line" element={<Line />} />
-                                <Route path="/geography" element={<PortfolioChartNew portfolioId={3} />} />
+                            <Route element={<UserProvider />}>
+                                <Route element={<AppLayout />}>
+                                    <Route path="/" element={<Navigate to="/portfolio-dashboard" replace/>} />
+                                    <Route path="/portfolio-dashboard" element={<MainDashboard />} />
+                                    <Route path="/stock/:symbol" element={<StockDetailsPage />} />
+                                    <Route path="/recommendations" element={<RecommendationsPage />} />
+                                    <Route path="/dashboard" element={<Dashboard />} />
+                                    <Route path="/team" element={<PortfolioDetails />} />
+                                    <Route path="/contacts" element={<Contacts />} />
+                                    <Route path="/invoices" element={<Invoices />} />
+                                    <Route path="/form" element={<ProfileForm />} />
+                                    <Route path="/calendar" element={<Calendar />} />
+                                    <Route path="/faq" element={<FAQ />} />
+                                    <Route path="/bar" element={<Bar />} />
+                                    <Route path="/pie" element={<Pie />} />
+                                    <Route path="/line" element={<Line />} />
+                                    <Route path="/geography" element={<PortfolioChartNew portfolioId={3} />} />
+                                </Route>
                             </Route>
                         </Route>
                     </Route>

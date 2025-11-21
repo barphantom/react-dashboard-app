@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Sidebar, Menu, MenuItem } from "react-pro-sidebar"
 import {useNavigate, useLocation} from "react-router-dom";
-import { Box, IconButton, Typography, useTheme } from "@mui/material"
+import { Box, IconButton, Typography, Skeleton, useTheme } from "@mui/material"
 import { tokens } from "../../themes.tsx";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
@@ -13,6 +13,7 @@ import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import {useUser} from "../../components/context/useUser.ts";
 
 type ItemProps = {
     title: string;
@@ -47,6 +48,8 @@ const MySidebar = () => {
     const location = useLocation();
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    const { user, loading } = useUser()
 
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
     const [selected, setSelected] = useState<string>(location.pathname);
@@ -165,7 +168,11 @@ const MySidebar = () => {
                                 fontWeight="bold"
                                 sx={{ m: "10px 0 0 0" }}
                             >
-                                - -
+                                {loading ? (
+                                    <Skeleton variant="text" width={120} sx={{ mx: "auto", bgcolor: "grey.700" }} />
+                                ) : (
+                                    user.name && user.lastName ? `${user.name} ${user.lastName}` : "User"
+                                )}
                             </Typography>
                             <Typography
                                 variant="h5"

@@ -19,6 +19,7 @@ import Header from "../../components/Header.tsx";
 import { tokens } from "../../themes.tsx";
 import {getUserProfile} from "../../api/portfolioApi.tsx";
 import api from "../../api/axiosConfig.ts";
+import {useUser} from "../../components/context/useUser.ts";
 
 
 interface UserFormValues {
@@ -37,6 +38,8 @@ const ProfileForm = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery("(min-width:600px)");
+
+    const { updateLocalUser } = useUser()
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -79,6 +82,8 @@ const ProfileForm = () => {
                 name: values.name,
                 lastName: values.lastName,
             })
+
+            updateLocalUser({name: values.name, lastName: values.lastName})
 
             setSnackbar({
                 open: true,
