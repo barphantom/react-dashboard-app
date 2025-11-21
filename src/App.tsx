@@ -10,10 +10,10 @@ import RegisterPage from "./pages/auth/RegisterPage.tsx"
 
 // Private pages
 import Dashboard from "./pages/dashboard/Dashboard.tsx";
-// import Team from "./pages/team/index.tsx"
+// import Team from "./pages/team/ProfileForm.tsx"
 import Invoices from "./pages/invoices/index.tsx"
 import Contacts from "./pages/contacts/index.tsx"
-import Form from "./pages/form/index.tsx"
+import ProfileForm from "./pages/form/ProfileForm.tsx"
 import Calendar from "./pages/calendar/index.tsx"
 import FAQ from "./pages/faq/index.tsx"
 import Bar from "./pages/bar/index.tsx"
@@ -52,7 +52,7 @@ function App() {
                                 <Route path="/team" element={<PortfolioDetails />} />
                                 <Route path="/contacts" element={<Contacts />} />
                                 <Route path="/invoices" element={<Invoices />} />
-                                <Route path="/form" element={<Form />} />
+                                <Route path="/form" element={<ProfileForm />} />
                                 <Route path="/calendar" element={<Calendar />} />
                                 <Route path="/faq" element={<FAQ />} />
                                 <Route path="/bar" element={<Bar />} />

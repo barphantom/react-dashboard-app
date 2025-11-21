@@ -83,3 +83,9 @@ export const getOHLCVData = async (symbol: string): Promise<Candle[]> => {
         close: item.close,
     }));
 };
+
+export const getUserProfile = async () => {
+    const response = await api.get("/auth/profile/")
+    return response.data;
+}
+
