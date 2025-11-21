@@ -7,12 +7,13 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
-import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+// import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import {useUser} from "../../components/context/useUser.ts";
 
 type ItemProps = {
@@ -249,9 +250,9 @@ const MySidebar = () => {
                         navigate={navigate}
                     />
                     <Item
-                        title="FAQ Page"
-                        to="/faq"
-                        icon={<HelpOutlineOutlinedIcon />}
+                        title="Knowledge Base"
+                        to="/knowledge-base"
+                        icon={<MenuBookOutlinedIcon />}
                         selected={selected}
                         setSelected={setSelected}
                         navigate={navigate}

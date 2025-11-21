@@ -15,7 +15,7 @@ import Invoices from "./pages/invoices/index.tsx"
 import Contacts from "./pages/contacts/index.tsx"
 import ProfileForm from "./pages/form/ProfileForm.tsx"
 import Calendar from "./pages/calendar/index.tsx"
-import FAQ from "./pages/faq/index.tsx"
+import KnowledgeBase from "./pages/knowledgeBase/index.tsx"
 import Bar from "./pages/bar/index.tsx"
 import Pie from "./pages/pie/index.tsx"
 import Line from "./pages/line/index.tsx"
@@ -56,7 +56,7 @@ function App() {
                                     <Route path="/invoices" element={<Invoices />} />
                                     <Route path="/form" element={<ProfileForm />} />
                                     <Route path="/calendar" element={<Calendar />} />
-                                    <Route path="/faq" element={<FAQ />} />
+                                    <Route path="/knowledge-base" element={<KnowledgeBase />} />
                                     <Route path="/bar" element={<Bar />} />
                                     <Route path="/pie" element={<Pie />} />
                                     <Route path="/line" element={<Line />} />
