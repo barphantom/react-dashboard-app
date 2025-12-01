@@ -1,8 +1,11 @@
 import axios from 'axios';
 import {jwtDecode} from "jwt-decode";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
+    // baseURL: 'http://127.0.0.1:8000/api/',
+    baseURL: `${API_URL}/api/`,
     headers: {
         'Content-Type': 'application/json',
     }
@@ -75,64 +78,5 @@ api.interceptors.request.use(async (config) => {
 
     return config
 })
-
-
-// api.interceptors.request.use((config) => {
-//     const accessToken = localStorage.getItem("access")
-//
-//     if (
-//         accessToken &&
-//         !config.url?.includes("login/") &&
-//         !config.url?.includes("register/") &&
-//         !config.url?.includes("token/refresh/") &&
-//         !config.url?.includes("token/verify/")
-//     ) {
-//         config.headers.Authorization = `Bearer ${accessToken}`
-//     }
-//     return config;
-// })
-
-// api.interceptors.response.use(
-//     (response) => response,
-//     async (error) => {
-//         const originalRequest = error.config;
-//
-//         if (
-//             error.response?.status === 401 &&
-//             !originalRequest._retry &&
-//             !originalRequest.url.includes("login/") &&
-//             !originalRequest.url.includes("register/")
-//         ) {
-//             originalRequest._retry = true;
-//             const refreshToken = localStorage.getItem("refresh");
-//
-//             if (!refreshToken) {
-//                 localStorage.clear()
-//                 window.location.href = "/login";
-//                 return Promise.reject(error);
-//             }
-//
-//             try {
-//                 const response = await api.post("auth/token/refresh/", {"refresh": refreshToken})
-//
-//                 const newAccess = response.data.access;
-//                 const newRefresh = response.data.refresh;
-//                 localStorage.setItem("access", newAccess);
-//                 localStorage.setItem("refresh", newRefresh);
-//
-//                 originalRequest.headers.Authorization = `Bearer ${newAccess}`;
-//                 return api(originalRequest);
-//
-//             } catch (refreshError) {
-//                 console.error("❌ Refresh token expired — logout");
-//                 localStorage.clear()
-//                 window.location.href = "/login";
-//                 return Promise.reject(refreshError);
-//             }
-//         }
-//
-//         return Promise.reject(error);
-//     }
-// );
 
 export default api;
