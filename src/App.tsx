@@ -22,12 +22,12 @@ import Line from "./pages/line/index.tsx"
 // import PortfolioValue from "./pages/line/portfolioValue.tsx";
 import MainDashboard from "./pages/dashboard/MainDashboard.tsx";
 import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
-import PortfolioDetails from "./pages/portfolioDetails/PortfolioDetails.tsx";
+import PortfolioPerformance from "./pages/portfolioDetails/PortfolioPerformance.tsx";
 import PortfolioChartNew from "./components/PortfolioDashboard/PortfolioChartNew.tsx";
 import {PortfolioIdProvider} from "./components/context/PortfolioIdProvider.tsx";
 import {UserProvider} from "./components/context/UserProvider.tsx";
 import RecommendationsPage from "./pages/recommendations/RecommendationsPage.tsx";
-
+import PortfolioPositions from "./pages/portfolioDetails/PortfolioPositions.tsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -50,8 +50,9 @@ function App() {
                                     <Route path="/portfolio-dashboard" element={<MainDashboard />} />
                                     <Route path="/stock/:symbol" element={<StockDetailsPage />} />
                                     <Route path="/recommendations" element={<RecommendationsPage />} />
+                                    <Route path="/portfolio-positions" element={<PortfolioPositions />} />
                                     <Route path="/dashboard" element={<Dashboard />} />
-                                    <Route path="/team" element={<PortfolioDetails />} />
+                                    <Route path="/portfolio-performance" element={<PortfolioPerformance />} />
                                     <Route path="/contacts" element={<Contacts />} />
                                     <Route path="/invoices" element={<Invoices />} />
                                     <Route path="/form" element={<ProfileForm />} />

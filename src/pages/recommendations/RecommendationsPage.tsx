@@ -1,10 +1,27 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, Typography, useTheme, Grid, Card, CardContent, CircularProgress, Alert, Slider } from "@mui/material";
+import {
+    Box,
+    Button,
+    TextField,
+    Typography,
+    useTheme,
+    Card,
+    CircularProgress,
+    Alert,
+    Slider,
+    LinearProgress,
+    Chip,
+    Paper,
+} from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { tokens } from "../../themes.tsx";
-import api from "../../api/axiosConfig.ts";
-import Header from "../../components/Header.tsx";
+import SearchIcon from "@mui/icons-material/Search";
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import { tokens } from "../../themes";
+import api from "../../api/axiosConfig";
+import Header from "../../components/Header";
+
 
 const SECTORS = [
     "Basic Materials",
@@ -43,49 +60,37 @@ const RecommendationsPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const validationSchema = Yup.object({
-        beta: Yup.number()
-            .required("Beta is required")
-            .min(0, "Beta must be at least 0")
-            .max(3, "Beta cannot exceed 3"),
-        pe_ratio: Yup.number()
-            .required("P/E Ratio is required")
-            .min(0, "P/E Ratio must be positive"),
-        market_cap: Yup.number()
-            .required("Market Cap is required")
-            .min(0, "Market Cap must be positive"),
-        dividend_yield: Yup.number()
-            .required("Dividend Yield is required")
-            .min(0, "Dividend Yield must be at least 0")
-            .max(20, "Dividend Yield cannot exceed 20%"),
+        beta: Yup.number().required().min(0).max(3),
+        pe_ratio: Yup.number().required().min(0),
+        market_cap: Yup.number().required().min(0),
+        dividend_yield: Yup.number().required().min(0).max(20),
     });
 
     const initialValues: FormValues = {
         beta: 1.0,
         pe_ratio: 20,
-        market_cap: 100000000000,
-        dividend_yield: 2.0,
-        sectorAllocations: {},
+        market_cap: 50000000000,
+        dividend_yield: 1.5,
+        sectorAllocations: { "Technology": 50, "Financial Services": 50 },
     };
 
     const handleSubmit = async (values: FormValues) => {
-        // Filter out sectors with 0% allocation
-        const sector_allocations = Object.entries(values.sectorAllocations)
-            .filter(([_, value]) => value > 0)
-            .reduce((acc, [key, value]) => {
-                acc[key] = value / 100; // Convert percentage to decimal
-                return acc;
-            }, {} as Record<string, number>);
-
-        // Validate that total allocation is 100%
         const totalAllocation = Object.values(values.sectorAllocations).reduce((sum, val) => sum + val, 0);
 
         if (Math.abs(totalAllocation - 100) > 0.01 && totalAllocation !== 0) {
-            setError("Total sector allocation must equal 100%");
+            setError(`Total: ${totalAllocation.toFixed(0)}%. Must be 100%.`);
             return;
         }
 
+        const sector_allocations = Object.entries(values.sectorAllocations)
+            .filter(([_, value]) => value > 0)
+            .reduce((acc, [key, value]) => {
+                acc[key] = value / 100;
+                return acc;
+            }, {} as Record<string, number>);
+
         if (Object.keys(sector_allocations).length === 0) {
-            setError("Please allocate at least one sector");
+            setError("Select at least one sector");
             return;
         }
 
@@ -107,208 +112,228 @@ const RecommendationsPage: React.FC = () => {
             setRecommendations(response.data.recommendations);
         } catch (err: any) {
             console.error(err);
-            setError(err.response?.data?.error || "Failed to fetch recommendations");
+            setError("Failed to fetch recommendations");
         } finally {
             setLoading(false);
         }
     };
 
-    return (
-        <Box m="20px">
-            <Header title="Stock Recommendations" subtitle="Get personalized S&P 500 stock recommendations based on your preferences" />
+    const getColorForMatch = (score: number) => {
+        if (score >= 0.9) return colors.greenAccent[500];
+        if (score >= 0.75) return colors.blueAccent[500];
+        return colors.redAccent[500];
+    };
 
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-            >
-                {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
+    return (
+        <Box m="20px" sx={{ height: "78vh", display: "flex", flexDirection: "column" }}>
+            <Header title="AI Recommendations" subtitle="Find stocks matching your precise criteria" />
+
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                {({ values, errors, touched, handleChange, handleBlur, setFieldValue, submitForm }) => {
+
                     const totalAllocation = Object.values(values.sectorAllocations).reduce((sum, val) => sum + val, 0);
-                    const remaining = 100 - totalAllocation;
+                    const isAllocationValid = Math.abs(totalAllocation - 100) < 0.1;
 
                     return (
-                        <Form>
-                            <Grid container spacing={3}>
-                                {/* Global Parameters */}
-                                <Grid item xs={12} md={6}>
-                                    <Box
-                                        sx={{
-                                            backgroundColor: colors.primary[400],
-                                            borderRadius: "1.5rem",
-                                            p: 3,
-                                        }}
-                                    >
-                                        <Typography variant="h5" mb={2} color={colors.greenAccent[500]}>
-                                            Portfolio Parameters
-                                        </Typography>
+                        <Form style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%", gap: "16px" }}>
+                            <Paper sx={{ p: 2, backgroundColor: colors.primary[400], borderRadius: "12px", flexShrink: 0 }}>
+                                <Box display="flex" alignItems="center" gap={1} mb={2}>
+                                    <TrendingUpIcon sx={{ color: colors.greenAccent[500], fontSize: 20 }} />
+                                    <Typography variant="h6" fontWeight="600" color={colors.grey[100]} fontSize="14px">
+                                        Global Strategy
+                                    </Typography>
+                                </Box>
 
-                                        <TextField
-                                            fullWidth
-                                            name="beta"
-                                            label="Beta (volatility)"
-                                            type="number"
-                                            value={values.beta}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={touched.beta && Boolean(errors.beta)}
-                                            helperText={touched.beta && errors.beta}
-                                            sx={{ mb: 2 }}
-                                            inputProps={{ step: 0.1, min: 0, max: 3 }}
-                                        />
+                                <Box sx={{
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                                    gap: "20px"
+                                }}>
+                                    <TextField
+                                        fullWidth variant="filled" label="Beta" name="beta" type="number" size="small"
+                                        value={values.beta} onChange={handleChange} onBlur={handleBlur}
+                                        error={touched.beta && !!errors.beta}
+                                        inputProps={{ step: 0.1, min: 0 }}
+                                    />
+                                    <TextField
+                                        fullWidth variant="filled" label="P/E Ratio" name="pe_ratio" type="number" size="small"
+                                        value={values.pe_ratio} onChange={handleChange} onBlur={handleBlur}
+                                        error={touched.pe_ratio && !!errors.pe_ratio}
+                                    />
+                                    <TextField
+                                        fullWidth variant="filled" label="Div Yield %" name="dividend_yield" type="number" size="small"
+                                        value={values.dividend_yield} onChange={handleChange} onBlur={handleBlur}
+                                        error={touched.dividend_yield && !!errors.dividend_yield}
+                                        inputProps={{ step: 0.1, min: 0 }}
+                                    />
+                                    <TextField
+                                        fullWidth variant="filled" label="Min Cap ($)" name="market_cap" type="number" size="small"
+                                        value={values.market_cap} onChange={handleChange} onBlur={handleBlur}
+                                        error={touched.market_cap && !!errors.market_cap}
+                                    />
+                                </Box>
+                            </Paper>
 
-                                        <TextField
-                                            fullWidth
-                                            name="pe_ratio"
-                                            label="P/E Ratio"
-                                            type="number"
-                                            value={values.pe_ratio}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={touched.pe_ratio && Boolean(errors.pe_ratio)}
-                                            helperText={touched.pe_ratio && errors.pe_ratio}
-                                            sx={{ mb: 2 }}
-                                            inputProps={{ step: 1, min: 0 }}
-                                        />
-
-                                        <TextField
-                                            fullWidth
-                                            name="market_cap"
-                                            label="Market Cap ($)"
-                                            type="number"
-                                            value={values.market_cap}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={touched.market_cap && Boolean(errors.market_cap)}
-                                            helperText={touched.market_cap && errors.market_cap}
-                                            sx={{ mb: 2 }}
-                                            inputProps={{ step: 1000000000 }}
-                                        />
-
-                                        <TextField
-                                            fullWidth
-                                            name="dividend_yield"
-                                            label="Dividend Yield (%)"
-                                            type="number"
-                                            value={values.dividend_yield}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={touched.dividend_yield && Boolean(errors.dividend_yield)}
-                                            helperText={touched.dividend_yield && errors.dividend_yield}
-                                            inputProps={{ step: 0.1, min: 0, max: 20 }}
-                                        />
-                                    </Box>
-                                </Grid>
-
-                                {/* Sector Allocations */}
-                                <Grid item xs={12} md={6}>
-                                    <Box
-                                        sx={{
-                                            backgroundColor: colors.primary[400],
-                                            borderRadius: "1.5rem",
-                                            p: 3,
-                                            maxHeight: "500px",
-                                            overflowY: "auto",
-                                        }}
-                                    >
-                                        <Typography variant="h5" mb={1} color={colors.greenAccent[500]}>
+                            <Paper sx={{
+                                p: 2,
+                                backgroundColor: colors.primary[400],
+                                borderRadius: "12px",
+                                flexGrow: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                                minHeight: "200px"
+                            }}>
+                                <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                                    <Box display="flex" alignItems="center" gap={1}>
+                                        <PieChartIcon sx={{ color: colors.blueAccent[500], fontSize: 20 }} />
+                                        <Typography variant="h6" fontWeight="600" color={colors.grey[100]} fontSize="14px">
                                             Sector Allocation
                                         </Typography>
-                                        <Typography variant="body2" mb={2} color={colors.grey[300]}>
-                                            Remaining: {remaining.toFixed(1)}% {remaining < 0 && <span style={{ color: colors.redAccent[500] }}>(Over 100%!)</span>}
-                                        </Typography>
+                                    </Box>
+                                    <Chip
+                                        label={`${totalAllocation.toFixed(0)}%`}
+                                        size="small"
+                                        sx={{
+                                            fontWeight: "bold",
+                                            backgroundColor: isAllocationValid ? "rgba(76, 206, 172, 0.2)" : "rgba(239, 83, 80, 0.2)",
+                                            color: isAllocationValid ? colors.greenAccent[500] : colors.redAccent[500]
+                                        }}
+                                    />
+                                </Box>
 
-                                        {SECTORS.map((sector) => (
-                                            <Box key={sector} mb={2}>
-                                                <Typography variant="body2" color={colors.grey[100]}>
-                                                    {sector}: {values.sectorAllocations[sector] || 0}%
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={Math.min(totalAllocation, 100)}
+                                    sx={{ mb: 2, height: 4, borderRadius: 2, backgroundColor: colors.primary[500], "& .MuiLinearProgress-bar": { backgroundColor: isAllocationValid ? colors.greenAccent[500] : colors.redAccent[500] } }}
+                                />
+
+                                {/* Kontener dla suwaków - Automatyczna siatka */}
+                                <Box sx={{
+                                    overflowY: "auto",
+                                    pr: 1,
+                                    flexGrow: 1,
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                                    gap: "20px 30px",
+                                    alignContent: "start",
+                                    "&::-webkit-scrollbar": { height: "4px" },
+                                    "&::-webkit-scrollbar-thumb": { backgroundColor: colors.blueAccent[500], borderRadius: "3px" },
+                                    "&::-webkit-scrollbar-track": { backgroundColor: colors.primary[400] }
+                                }}>
+                                    {SECTORS.map((sector) => (
+                                        <Box key={sector}>
+                                            <Box display="flex" justifyContent="space-between" alignItems="center">
+                                                <Typography variant="caption" color={colors.grey[100]} noWrap title={sector} sx={{fontSize: 11}}>{sector}</Typography>
+                                                <Typography variant="caption" fontWeight="bold" color={colors.greenAccent[500]}>
+                                                    {values.sectorAllocations[sector] || 0}%
                                                 </Typography>
-                                                <Slider
-                                                    value={values.sectorAllocations[sector] || 0}
-                                                    onChange={(_, value) => {
-                                                        setFieldValue(`sectorAllocations.${sector}`, value);
-                                                    }}
-                                                    min={0}
-                                                    max={100}
-                                                    step={5}
-                                                    valueLabelDisplay="auto"
+                                            </Box>
+                                            <Slider
+                                                size="small"
+                                                value={values.sectorAllocations[sector] || 0}
+                                                onChange={(_, val) => setFieldValue(`sectorAllocations.${sector}`, val)}
+                                                step={5} min={0} max={100}
+                                                sx={{ color: colors.greenAccent[500], p: 0.5 }}
+                                            />
+                                        </Box>
+                                    ))}
+                                </Box>
+                            </Paper>
+
+                            {/* Przycisk akcji - Pomiędzy sekcjami */}
+                            <Box display="flex" justifyContent="center">
+                                <Button
+                                    onClick={submitForm}
+                                    disabled={loading || !isAllocationValid}
+                                    variant="contained"
+                                    size="medium"
+                                    sx={{
+                                        backgroundColor: colors.blueAccent[500],
+                                        color: "white",
+                                        fontWeight: "bold",
+                                        borderRadius: "20px",
+                                        px: 4,
+                                        boxShadow: "0px 4px 12px rgba(0,0,0,0.2)",
+                                        "&:hover": { backgroundColor: "#3693e0" }
+                                    }}
+                                    startIcon={loading ? <CircularProgress size={16} color="inherit"/> : <SearchIcon />}
+                                >
+                                    {loading ? "Searching..." : "Find Stocks"}
+                                </Button>
+                            </Box>
+
+                            {error && <Alert severity="error" sx={{ py: 0 }}>{error}</Alert>}
+
+                            {recommendations.length > 0 && (
+                                <Box sx={{ flexShrink: 0, overflow: "hidden" }}>
+                                    <Box sx={{
+                                        display: "flex",
+                                        overflowX: "auto",
+                                        gap: 2,
+                                        pb: 1,
+                                        "&::-webkit-scrollbar": { height: "6px" },
+                                        "&::-webkit-scrollbar-thumb": { backgroundColor: colors.blueAccent[500], borderRadius: "3px" },
+                                        "&::-webkit-scrollbar-track": { backgroundColor: colors.primary[400] }
+                                    }}>
+                                        {recommendations.map((rec, index) => (
+                                            <Card
+                                                key={index}
+                                                sx={{
+                                                    width: "130px",  // Sztywne wymiary kwadratu
+                                                    height: "130px", // Sztywne wymiary kwadratu
+                                                    backgroundColor: colors.primary[400],
+                                                    borderRadius: "16px",
+                                                    border: `1px solid ${colors.grey[700]}`,
+                                                    flexShrink: 0,
+                                                    display: "flex", // Flex dla centrowania
+                                                    flexDirection: "column",
+                                                    alignItems: "center", // Centrowanie poziome
+                                                    justifyContent: "center", // Centrowanie pionowe
+                                                    transition: "0.2s",
+                                                    cursor: "pointer",
+                                                    "&:hover": { borderColor: getColorForMatch(rec.similarity), transform: "scale(1.05)" }
+                                                }}
+                                            >
+                                                {/* Score Circle - Central Point */}
+                                                <Box position="relative" display="inline-flex" mb={1}>
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={rec.similarity * 100}
+                                                        size={38}
+                                                        thickness={5}
+                                                        sx={{ color: getColorForMatch(rec.similarity) }}
+                                                    />
+                                                    <Box sx={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <Typography variant="caption" component="div" color="text.secondary" fontWeight="bold" fontSize="10px">
+                                                            {(rec.similarity * 100).toFixed(0)}%
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Typography variant="subtitle2" color={colors.grey[100]} fontWeight="bold" lineHeight={1.1}>
+                                                    {rec.symbol}
+                                                </Typography>
+
+                                                <Chip
+                                                    label={rec.sector}
+                                                    size="small"
                                                     sx={{
-                                                        color: colors.greenAccent[500],
+                                                        mt: 0.5,
+                                                        height: 16,
+                                                        fontSize: 9,
+                                                        maxWidth: "90%",
+                                                        backgroundColor: "rgba(255,255,255,0.08)"
                                                     }}
                                                 />
-                                            </Box>
+                                            </Card>
                                         ))}
                                     </Box>
-                                </Grid>
-
-                                {/* Submit Button */}
-                                <Grid item xs={12}>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        disabled={loading || remaining !== 0}
-                                        sx={{
-                                            backgroundColor: colors.greenAccent[600],
-                                            color: colors.grey[100],
-                                            fontSize: "14px",
-                                            fontWeight: "bold",
-                                            padding: "10px 20px",
-                                            "&:hover": {
-                                                backgroundColor: colors.greenAccent[700],
-                                            },
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress size={24} /> : "Get Recommendations"}
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                                </Box>
+                            )}
                         </Form>
                     );
                 }}
             </Formik>
-
-            {/* Error Alert */}
-            {error && (
-                <Box mt={3}>
-                    <Alert severity="error">{error}</Alert>
-                </Box>
-            )}
-
-            {/* Recommendations */}
-            {recommendations.length > 0 && (
-                <Box mt={4}>
-                    <Typography variant="h4" mb={2} color={colors.grey[100]}>
-                        Recommended Stocks
-                    </Typography>
-                    <Grid container spacing={2}>
-                        {recommendations.map((rec, index) => (
-                            <Grid item xs={12} sm={6} md={4} key={index}>
-                                <Card
-                                    sx={{
-                                        backgroundColor: colors.primary[400],
-                                        borderRadius: "1rem",
-                                        border: `1px solid ${colors.primary[500]}`,
-                                    }}
-                                >
-                                    <CardContent>
-                                        <Typography variant="h5" color={colors.greenAccent[500]} fontWeight="bold">
-                                            {rec.symbol}
-                                        </Typography>
-                                        <Typography variant="body1" color={colors.grey[100]} mb={1}>
-                                            {rec.name}
-                                        </Typography>
-                                        <Typography variant="body2" color={colors.grey[300]}>
-                                            Sector: {rec.sector}
-                                        </Typography>
-                                        <Typography variant="body2" color={colors.grey[400]} mt={1}>
-                                            Match: {(rec.similarity * 100).toFixed(1)}%
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
-            )}
         </Box>
     );
 };

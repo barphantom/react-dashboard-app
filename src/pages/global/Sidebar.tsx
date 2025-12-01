@@ -4,7 +4,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 import { Box, IconButton, Typography, Skeleton, useTheme } from "@mui/material"
 import { tokens } from "../../themes.tsx";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+// import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 // import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
@@ -14,6 +14,8 @@ import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+// import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import {useUser} from "../../components/context/useUser.ts";
 
 type ItemProps = {
@@ -207,9 +209,18 @@ const MySidebar = () => {
                     </Typography>
 
                     <Item
-                        title="Portfolio Details"
-                        to="/team"
-                        icon={<PeopleOutlineOutlinedIcon />}
+                        title="Portfolio Performance"
+                        to="/portfolio-performance"
+                        icon={<TimelineOutlinedIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                        navigate={navigate}
+                    />
+
+                    <Item
+                        title="Portfolio Positions"
+                        to="/portfolio-positions"
+                        icon={<ListAltOutlinedIcon />}
                         selected={selected}
                         setSelected={setSelected}
                         navigate={navigate}

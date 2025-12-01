@@ -2,8 +2,12 @@ import Sidebar from "../pages/global/Sidebar.tsx"
 import Topbar from "../pages/global/Topbar.tsx"
 import { Outlet } from 'react-router-dom';
 import {Box} from "@mui/material";
+import {useRef} from "react";
+import {SearchRefContext} from "../components/context/SearchRefContext.ts";
 
 const AppLayout = () => {
+    const searchInputRef = useRef<HTMLInputElement | null>(null);
+
     return (
         <Box
             sx={{
@@ -23,10 +27,12 @@ const AppLayout = () => {
                     minWidth: 0,
                 }}
             >
-                <Topbar />
-                <Box>
-                    <Outlet />
-                </Box>
+                <SearchRefContext.Provider value={searchInputRef}>
+                    <Topbar />
+                    <Box>
+                        <Outlet />
+                    </Box>
+                </SearchRefContext.Provider>
             </Box>
         </Box>
     )

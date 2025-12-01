@@ -4,10 +4,13 @@ import {tokens} from "../themes.tsx";
 import {searchStocks} from "../api/portfolioApi.tsx";
 import {type StockSearchResult} from "../types/stockTypes.tsx";
 import {useNavigate} from "react-router-dom";
+import {useSearchRef} from "./context/useSearchRef.ts";
 
 const StockSearch = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    const inputRef = useSearchRef()
 
     const [query, setQuery] = useState("");
     const [options, setOptions] = useState<StockSearchResult[]>([]);
@@ -67,6 +70,7 @@ const StockSearch = () => {
                 <TextField
                     {...params}
                     label="Search company or symbol..."
+                    inputRef={inputRef}
                     variant="outlined"
                     InputProps={{
                         ...params.InputProps,
