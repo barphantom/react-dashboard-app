@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import api from "../../api/axiosConfig.ts";
-import { Box, Button, ButtonGroup, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { createChart, ColorType, LineSeries } from "lightweight-charts";
 import {tokens} from "../../themes.tsx";
 import type { PortfolioDataPoint, PortfolioChartNewProps } from "../../types/stockTypes.tsx";

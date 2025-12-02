@@ -19,7 +19,6 @@ import KnowledgeBase from "./pages/knowledgeBase/index.tsx"
 import Bar from "./pages/bar/index.tsx"
 import Pie from "./pages/pie/index.tsx"
 import Line from "./pages/line/index.tsx"
-// import PortfolioValue from "./pages/line/portfolioValue.tsx";
 import MainDashboard from "./pages/dashboard/MainDashboard.tsx";
 import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
 import PortfolioPerformance from "./pages/portfolioDetails/PortfolioPerformance.tsx";

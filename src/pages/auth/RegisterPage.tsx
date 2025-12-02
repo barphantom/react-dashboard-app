@@ -3,8 +3,8 @@ import {Box, TextField, Button, Typography} from '@mui/material';
 import image from '../../assets/images/Register-Image.svg'
 import {Formik, Form, Field, ErrorMessage, type FormikHelpers} from "formik";
 import * as Yup from 'yup';
-// import api from "../../api/axiosConfig.ts";
 import {register} from "../../api/auth.ts";
+import { AxiosError } from "axios";
 
 interface RegisterFormValues {
     name: string;
@@ -37,21 +37,10 @@ const RegisterPage: React.FC = () => {
         {setSubmitting}: FormikHelpers<RegisterFormValues>
     ) => {
         try {
-            // const response = await api.post("auth/register/", {
-            //     name: values.name,
-            //     lastName: values.lastName,
-            //     email: values.email,
-            //     password: values.password,
-            //     confirm_password: values.confirmPassword,
-            // })
-            // console.log("✅ Registration successful:", response.data);
-            //
-            // localStorage.setItem("accessToken", response.data.access)
-            // localStorage.setItem("refreshToken", response.data.refresh)
-            // localStorage.setItem("user", JSON.stringify(response.data.user))
             await register(values.name, values.lastName, values.email, values.password, values.confirmPassword);
             window.location.href = "/"
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as AxiosError<Record<string, string[]>>;
             console.error("❌ Registration error:", error);
             if (error.response?.data) {
                 const data = error.response.data;
@@ -69,16 +58,19 @@ const RegisterPage: React.FC = () => {
 
     return (
         <Box
-            height="100vh"
-            display="flex"
-            backgroundColor="#53105e"
-            // backgroundColor="white"
+            sx={{
+                height: "100vh",
+                display: "flex",
+                backgroundColor: "#53105e",
+            }}
         >
             {/* Lewa część - grafika */}
             <Box
                 width="50%"
-                boxSizing="border-box"
                 padding={6}
+                sx={{
+                    boxSizing: "border-box",
+                }}
             >
                 <Box
                     component="img"

@@ -3,12 +3,18 @@ import {Box, TextField, Button, Typography} from '@mui/material';
 import image from '../../assets/images/Login-Image.svg'
 import {Formik, Form, Field, ErrorMessage, type FormikHelpers} from "formik";
 import * as Yup from 'yup';
-// import api from '../../api/axiosConfig.ts'
 import {login} from "../../api/auth.ts";
+import { AxiosError } from "axios";
+
 
 interface LoginFormValues {
     email: string;
     password: string;
+}
+
+interface AuthErrorResponse {
+    error?: string;
+    detail?: string;
 }
 
 const loginSchema: Yup.Schema<LoginFormValues> = Yup.object().shape({
@@ -27,18 +33,10 @@ const LoginPage: React.FC = () => {
         {setSubmitting}: FormikHelpers<LoginFormValues>
     ) => {
         try {
-            // const response = await api.post("auth/login/", {
-            //     email: values.email,
-            //     password: values.password,
-            // })
-            // console.log("Login credentials sent!", response.data)
-            //
-            // localStorage.setItem("access", response.data.access)
-            // localStorage.setItem("refresh", response.data.refresh)
-            // localStorage.setItem("user", JSON.stringify(response.data.user))
             await login(values.email, values.password);
             window.location.href = "/"
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as AxiosError<AuthErrorResponse>
             console.error("❌ Login error:", error);
             alert(
                 error.response?.data?.error ||
@@ -52,10 +50,11 @@ const LoginPage: React.FC = () => {
 
     return (
         <Box
-            height="100vh"
-            display="flex"
-            backgroundColor="#53105e"
-            // backgroundColor="white"
+            sx={{
+                height: "100vh",
+                display: "flex",
+                backgroundColor: "#53105e"
+            }}
         >
             {/* Lewa część - grafika */}
             <Box

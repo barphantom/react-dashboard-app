@@ -38,10 +38,15 @@ const StockSearch = () => {
             freeSolo
             loading={loading}
             options={options}
-            getOptionLabel={(option) => `${option.symbol} - ${option.name}`}
+            getOptionLabel={(option) => {
+                if (typeof option === "string") {
+                    return option;
+                }
+                return `${option.symbol} - ${option.name}`;
+            }}
             onInputChange={(_, value) => setQuery(value)}
             onChange={(_, value) => {
-                if (value) {
+                if (value && typeof value !== "string") {
                     navigate(`/stock/${value.symbol}`);
                 }
             }}
