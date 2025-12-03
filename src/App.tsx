@@ -22,11 +22,11 @@ import Line from "./pages/line/index.tsx"
 import MainDashboard from "./pages/dashboard/MainDashboard.tsx";
 import StockDetailsPage from "./pages/stockDetails/StockDetailsPage.tsx";
 import PortfolioPerformance from "./pages/portfolioDetails/PortfolioPerformance.tsx";
-import PortfolioChartNew from "./components/PortfolioDashboard/PortfolioChartNew.tsx";
 import {PortfolioIdProvider} from "./components/context/PortfolioIdProvider.tsx";
 import {UserProvider} from "./components/context/UserProvider.tsx";
 import RecommendationsPage from "./pages/recommendations/RecommendationsPage.tsx";
 import PortfolioPositions from "./pages/portfolioDetails/PortfolioPositions.tsx";
+import AboutPage from "./pages/AboutPage.tsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -53,6 +53,7 @@ function App() {
                                     <Route path="/dashboard" element={<Dashboard />} />
                                     <Route path="/portfolio-performance" element={<PortfolioPerformance />} />
                                     <Route path="/contacts" element={<Contacts />} />
+                                    <Route path="/about-page" element={<AboutPage />} />
                                     <Route path="/invoices" element={<Invoices />} />
                                     <Route path="/form" element={<ProfileForm />} />
                                     <Route path="/calendar" element={<Calendar />} />
@@ -60,7 +61,6 @@ function App() {
                                     <Route path="/bar" element={<Bar />} />
                                     <Route path="/pie" element={<Pie />} />
                                     <Route path="/line" element={<Line />} />
-                                    <Route path="/geography" element={<PortfolioChartNew portfolioId={3} />} />
                                 </Route>
                             </Route>
                         </Route>

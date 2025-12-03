@@ -16,6 +16,7 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 // import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {useUser} from "../../components/context/useUser.ts";
 
 type ItemProps = {
@@ -264,6 +265,14 @@ const MySidebar = () => {
                         title="Knowledge Base"
                         to="/knowledge-base"
                         icon={<MenuBookOutlinedIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                        navigate={navigate}
+                    />
+                    <Item
+                        title="About Page"
+                        to="/about-page"
+                        icon={<InfoOutlinedIcon />}
                         selected={selected}
                         setSelected={setSelected}
                         navigate={navigate}
