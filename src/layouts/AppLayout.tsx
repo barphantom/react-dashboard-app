@@ -16,7 +16,6 @@ const AppLayout = () => {
                 minHeight: "100vh",
             }}
         >
-            <Sidebar />
             <Box
                 component="main"
                 sx={{
@@ -34,6 +33,7 @@ const AppLayout = () => {
                     </Box>
                 </SearchRefContext.Provider>
             </Box>
+            <Sidebar />
         </Box>
     )
 }
