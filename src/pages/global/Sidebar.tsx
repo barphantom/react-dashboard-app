@@ -236,6 +236,15 @@ const MySidebar = () => {
                         navigate={navigate}
                     />
 
+                    <Item
+                        title="Genetic Algorithm"
+                        to="/GARecommendations"
+                        icon={<MapOutlinedIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                        navigate={navigate}
+                    />
+
                     <Typography
                         variant="h6"
                         color={colors.grey[500]}

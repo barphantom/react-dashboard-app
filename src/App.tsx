@@ -27,6 +27,7 @@ import {UserProvider} from "./components/context/UserProvider.tsx";
 import RecommendationsPage from "./pages/recommendations/RecommendationsPage.tsx";
 import PortfolioPositions from "./pages/portfolioDetails/PortfolioPositions.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
+import GARecommendationsPage from "./pages/recommendations/GARecommendationPage.tsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -49,6 +50,7 @@ function App() {
                                     <Route path="/portfolio-dashboard" element={<MainDashboard />} />
                                     <Route path="/stock/:symbol" element={<StockDetailsPage />} />
                                     <Route path="/recommendations" element={<RecommendationsPage />} />
+                                    <Route path="/GARecommendations" element={<GARecommendationsPage />} />
                                     <Route path="/portfolio-positions" element={<PortfolioPositions />} />
                                     <Route path="/dashboard" element={<Dashboard />} />
                                     <Route path="/portfolio-performance" element={<PortfolioPerformance />} />
